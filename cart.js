@@ -155,7 +155,7 @@ async function placeOrder() {
         status: "pending",
 
         createdAt:
-            new Date()
+            firebase.firestore.FieldValue.serverTimestamp()
     };
 
     try {
