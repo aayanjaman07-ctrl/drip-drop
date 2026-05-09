@@ -88,7 +88,7 @@ header {
 }
 
 /* NAVBAR BASE */
-.navbar {
+header, .navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -96,7 +96,7 @@ header {
     position: fixed;
     width: 100%;
     top: 0;
-    z-index: 1000;
+    z-index: 10000;
     background: rgba(0,0,0,0.85);
     backdrop-filter: blur(15px);
 }
@@ -172,7 +172,7 @@ header {
 /* HAMBURGER (HIDDEN ON DESKTOP) */
 .hamburger {
     position: relative;
-    z-index: 9999;
+    z-index: 10000;
     display: none;
     flex-direction: column;
     cursor: pointer;
