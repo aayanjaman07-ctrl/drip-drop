@@ -171,6 +171,8 @@ header {
 
 /* HAMBURGER (HIDDEN ON DESKTOP) */
 .hamburger {
+    position: relative;
+    z-index: 9999;
     display: none;
     flex-direction: column;
     cursor: pointer;
