@@ -1,132 +1,90 @@
 /* PROTECT PAGE */
-
 auth.onAuthStateChanged((user) => {
-
     if (!user) {
-
-        window.location.href =
-            "admin-login.html";
+        window.location.href = "admin-login.html";
+        return;
     }
+
+    loadOrders(); // ✅ IMPORTANT FIX
 });
 
-/* LOAD ORDERS */
+const ordersContainer = document.getElementById("orders");
 
-const ordersContainer =
-    document.getElementById("orders");
-
-async function loadOrders() {
-
-    const ordersContainer =
-        document.getElementById("orders");
+/* LOAD ORDERS REALTIME */
+function loadOrders() {
 
     db.collection("orders")
         .orderBy("createdAt", "desc")
         .onSnapshot((snapshot) => {
 
-    ordersContainer.innerHTML = "";
+            ordersContainer.innerHTML = "";
 
-    snapshot.forEach((doc) => {
+            snapshot.forEach((doc) => {
 
-        const order = doc.data();
+                const order = doc.data();
 
-        let itemsHTML = "";
+                let itemsHTML = "";
 
-        order.items.forEach((item) => {
+                if (order.items && Array.isArray(order.items)) {
+                    order.items.forEach((item) => {
+                        itemsHTML += `
+                            <div class="item">
+                                ${item.name} | Size: ${item.size} | Qty: ${item.quantity}
+                            </div>
+                        `;
+                    });
+                }
 
-            itemsHTML += `
-                <div class="item">
+                const status = order.status || "pending";
 
-                    ${item.name}
-                    | Size: ${item.size}
-                    | Qty: ${item.quantity}
+                ordersContainer.innerHTML += `
+                    <div class="order">
 
-                </div>
-            `;
-        });
+                        <h3>
+                            Order ID:
+                            <span class="badge">${doc.id}</span>
+                        </h3>
 
-        ordersContainer.innerHTML += `
+                        <p><b>Name:</b> ${order.name || ""}</p>
+                        <p><b>Phone:</b> ${order.phone || ""}</p>
+                        <p><b>bKash TRX ID:</b> ${order.trxId || ""}</p>
+                        <p><b>Address:</b> ${order.address || ""}</p>
+                        <p><b>Total:</b> $${order.total || 0}</p>
 
-            <div class="order">
+                        <p>
+                            <b>Status:</b>
+                            <span class="status ${status}">
+                                ${status}
+                            </span>
+                        </p>
 
-                <h3>
-                    Order ID:
-                    <span class="badge">
-                        ${doc.id}
-                    </span>
-                </h3>
+                        <div class="items">
+                            ${itemsHTML}
+                        </div>
 
-                <p>
-                    <b>Name:</b>
-                    ${order.name}
-                </p>
+                        <div class="status-buttons">
 
-                <p>
-                    <b>Phone:</b>
-                    ${order.phone}
-                </p>
+                            <button onclick="updateStatus('${doc.id}', 'pending')">
+                                Pending
+                            </button>
 
-                <p>
-                    <b>bKash TRX ID:</b>
-                    ${order.trxId}
-                </p>
+                            <button onclick="updateStatus('${doc.id}', 'shipped')">
+                                Shipped
+                            </button>
 
-                <p>
-                    <b>Address:</b>
-                    ${order.address}
-                </p>
+                            <button onclick="updateStatus('${doc.id}', 'delivered')">
+                                Delivered
+                            </button>
 
-                <p>
-                    <b>Total:</b>
-                    $${order.total}
-                </p>
+                        </div>
 
-                <p>
-                    <b>Status:</b>
-                    <span class="status ${order.status || 'pending'}">
-                    ${order.status || "pending"}
-                    </span>
-                </p>
-
-                <div class="items">
-                    ${itemsHTML}
-                </div>
-
-                <div class="status-buttons">
-
-                    <button onclick="updateStatus('${doc.id}', 'pending')">
-                    Pending
-                    </button>
-
-                    <button onclick="updateStatus('${doc.id}', 'shipped')">
-                    Shipped
-                    </button>
-
-                    <button onclick="updateStatus('${doc.id}', 'delivered')">
-                    Delivered
-                    </button>
-
-                </div>
-
-            </div>
-        `;
-    });
-}
-
-loadOrders();
-
-/* LOGOUT */
-
-function logout() {
-
-    auth.signOut()
-
-        .then(() => {
-
-            window.location.href =
-                "admin-login.html";
+                    </div>
+                `;
+            });
         });
 }
 
+/* UPDATE STATUS */
 async function updateStatus(orderId, newStatus) {
 
     try {
@@ -137,14 +95,15 @@ async function updateStatus(orderId, newStatus) {
                 status: newStatus
             });
 
-        alert("Status updated!");
-
-        loadOrders(); // refresh list
-
     } catch (error) {
-
         console.error(error);
-
         alert("Failed to update status.");
     }
+}
+
+/* LOGOUT */
+function logout() {
+    auth.signOut().then(() => {
+        window.location.href = "admin-login.html";
+    });
 }
