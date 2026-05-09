@@ -1,4 +1,3 @@
-console.log("cart.js loaded");
 let cart =
     JSON.parse(localStorage.getItem("cart")) || [];
 
@@ -76,8 +75,14 @@ function openCheckout(event) {
 
 function closeCheckout() {
 
-    document.getElementById("checkout-modal")
-        .style.display = "none";
+    const modal =
+        document.getElementById("checkout-modal");
+
+    modal.style.opacity = "0";
+
+    setTimeout(() => {
+        modal.style.display = "none";
+    }, 200);
 }
 
 renderCart();
