@@ -128,16 +128,17 @@ header, .navbar {
 }
 
 .estilo{
-    font-family: 'Anton', sans-serif;
-    font-size: 3rem;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem;
     color: white;
-    letter-spacing: -2px;
+    letter-spacing: -1px;
     line-height: 1;
+    transform: scaleY(1.1);
 }
 
 .studios{
-    font-family: 'Great Vibes', cursive;
-    font-size: 3.4rem;
+    font-family: 'Monsieur La Doulaise', cursive;
+    font-size: 2.4rem;
     color: white;
     margin-left: -12px;
     position: relative;
@@ -148,6 +149,7 @@ header, .navbar {
 .registered{
     font-size: 0.8rem;
     position: relative;
+    color: #fbbf24;
     top: -28px;
     left: 2px;
 }
