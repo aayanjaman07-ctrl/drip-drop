@@ -115,9 +115,9 @@ header, .navbar {
 }
 
 .logo-img {
-    height: 40px;
+    height: 60px;
     width: auto;
-    max-width: 45px;
+    max-width: 90px;
     object-fit: contain;
     filter: drop-shadow(0 2px 8px rgba(251, 191, 36, 0.3));
     flex-shrink: 0;
