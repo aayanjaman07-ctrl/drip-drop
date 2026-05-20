@@ -101,7 +101,7 @@ header, .navbar {
     backdrop-filter: blur(15px);
 }
 
-@import url('https://fonts.googleapis.com/css2?family=Anton&family=Great+Vibes&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Monsieur+La+Doulaise&display=swap');
 
 .logo {
     display: flex;
